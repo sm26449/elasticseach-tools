@@ -1,0 +1,41 @@
+# Environment variables (contains sensitive data)
+.env
+
+# SSL certificates
+ca.crt
+*.crt
+*.key
+*.pem
+
+# Docker volumes
+redis-data/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Trash folder
+trash/
+
+# Temporary files
+*.tmp
+*.temp

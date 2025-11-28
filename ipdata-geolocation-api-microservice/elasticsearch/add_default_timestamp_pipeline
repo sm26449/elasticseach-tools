@@ -1,0 +1,14 @@
+PUT _ingest/pipeline/set_timestamp_if_missing
+{
+  "description": "Setează @timestamp la timestamp-ul de ingestie dacă lipsește",
+  "processors": [
+    {
+      "set": {
+        "description": "Dacă '@timestamp' lipsește, îl setează cu timestamp-ul de ingestie",
+        "field": "@timestamp",
+        "override": false,
+        "value": "{{_ingest.timestamp}}"
+      }
+    }
+  ]
+}

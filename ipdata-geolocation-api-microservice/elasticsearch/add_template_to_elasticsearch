@@ -1,0 +1,297 @@
+PUT _index_template/ipdata
+{
+  "template": {
+    "settings": {
+      "index": {
+        "routing": {
+          "allocation": {
+            "include": {
+              "_tier_preference": "data_content"
+            }
+          }
+        },
+        "default_pipeline": "set_default_timestamp",
+        "refresh_interval": "30s",
+        "number_of_shards": "1",
+        "number_of_replicas": "1"
+      }
+    },
+    "mappings": {
+      "dynamic_templates": [],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "asn": {
+          "properties": {
+            "asn": {
+              "type": "keyword"
+            },
+            "domain": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text"
+            },
+            "route": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          }
+        },
+        "calling_code": {
+          "type": "keyword"
+        },
+        "carrier": {
+          "properties": {
+            "mcc": {
+              "type": "keyword"
+            },
+            "mnc": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "city": {
+          "type": "keyword"
+        },
+        "company": {
+          "properties": {
+            "domain": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text"
+            },
+            "network": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "keyword"
+            }
+          }
+        },
+        "continent_code": {
+          "type": "keyword"
+        },
+        "continent_name": {
+          "type": "keyword"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "country_code": {
+          "type": "keyword"
+        },
+        "country_name": {
+          "type": "keyword"
+        },
+        "currency": {
+          "properties": {
+            "code": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "native": {
+              "type": "text",
+              "index": false
+            },
+            "plural": {
+              "type": "text"
+            },
+            "symbol": {
+              "type": "text",
+              "index": false
+            }
+          }
+        },
+        "emoji_flag": {
+          "type": "text",
+          "index": false
+        },
+        "emoji_unicode": {
+          "type": "text",
+          "index": false
+        },
+        "flag": {
+          "type": "keyword"
+        },
+        "ip": {
+          "type": "ip"
+        },
+        "is_eu": {
+          "type": "boolean"
+        },
+        "languages": {
+          "properties": {
+            "code": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "native": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "rtl": {
+              "type": "long"
+            }
+          }
+        },
+        "latitude": {
+          "type": "float"
+        },
+        "longitude": {
+          "type": "float"
+        },
+        "postal": {
+          "type": "keyword"
+        },
+        "region": {
+          "type": "keyword"
+        },
+        "region_code": {
+          "type": "keyword"
+        },
+        "region_type": {
+          "type": "keyword"
+        },
+        "threat": {
+          "properties": {
+            "additional_info": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "blocklists": {
+              "properties": {
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "site": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "type": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "is_anonymous": {
+              "type": "boolean"
+            },
+            "is_bogon": {
+              "type": "boolean"
+            },
+            "is_datacenter": {
+              "type": "boolean"
+            },
+            "is_icloud_relay": {
+              "type": "boolean"
+            },
+            "is_known_abuser": {
+              "type": "boolean"
+            },
+            "is_known_attacker": {
+              "type": "boolean"
+            },
+            "is_proxy": {
+              "type": "boolean"
+            },
+            "is_threat": {
+              "type": "boolean"
+            },
+            "is_tor": {
+              "type": "boolean"
+            },
+            "is_vpn": {
+              "type": "boolean"
+            },
+            "scores": {
+              "properties": {
+                "proxy_score": {
+                  "type": "long"
+                },
+                "threat_score": {
+                  "type": "long"
+                },
+                "trust_score": {
+                  "type": "long"
+                },
+                "vpn_score": {
+                  "type": "long"
+                }
+              }
+            }
+          }
+        },
+        "time_zone": {
+          "properties": {
+            "abbr": {
+              "type": "keyword"
+            },
+            "current_time": {
+              "type": "date"
+            },
+            "is_dst": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "offset": {
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    },
+    "aliases": {}
+  }
+}

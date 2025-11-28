@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+httpx
+python-dotenv
+redis
+elasticsearch
+aiohttp
+backoff
+datetime
+pydantic
+uuid
+python-dateutil
+pandas

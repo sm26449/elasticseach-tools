@@ -1,0 +1,29 @@
+FROM python:3.9-alpine
+
+# Instalare redis client și cronie
+RUN apk add --no-cache redis dcron
+
+# Crearea unui utilizator non-root
+RUN addgroup -g 1000 appuser && \
+    adduser -D -u 1000 -G appuser appuser
+
+WORKDIR /app
+
+# Copiere script-ul de reset
+COPY --chown=appuser:appuser reset_requests_made.py ./
+
+# Instalare redis pentru Python
+RUN pip install --no-cache-dir redis
+
+# Creare crontab pentru reset zilnic la miezul nopții
+RUN echo "0 0 * * * python /app/reset_requests_made.py >> /var/log/cron.log 2>&1" > /etc/crontabs/appuser
+
+# Creare script de start care pornește cron și rămâne în foreground
+RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'crond -f -l 2' >> /start.sh && \
+    chmod +x /start.sh
+
+# Rămânem ca root pentru a putea rula crond
+# USER appuser
+
+CMD ["/start.sh"]

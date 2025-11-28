@@ -1,0 +1,313 @@
+
+networks:
+  ipdata-network:
+    driver: bridge
+
+services:
+  # Redis service for caching
+  redis:
+    image: redis:7-alpine
+    container_name: ipdata-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - ipdata-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # HAProxy load balancer
+  haproxy:
+    image: haproxy:2.8-alpine
+    container_name: ipdata-haproxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "8404:8404"  # Stats page
+    volumes:
+      - ./haproxy/haproxy-docker.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+      - ipdata-1
+      - ipdata-2
+      - ipdata-3
+      - ipdata-4
+      - ipdata-5
+      - ipdata-6
+      - ipdata-7
+      - ipdata-8
+      - ipdata-9
+      - ipdata-10
+    healthcheck:
+      test: ["CMD", "haproxy", "-c", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # IPData application instances (10 containers)
+  ipdata-1:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-1
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-1
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-2:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-2
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-3:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-3
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-3
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-4:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-4
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-4
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-5:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-5
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-5
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-6:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-6
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-6
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-7:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-7
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-7
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-8:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-8
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-8
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-9:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-9
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-9
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  ipdata-10:
+    build: .
+    image: ipdata:latest
+    container_name: ipdata-10
+    restart: unless-stopped
+    environment:
+      - CONTAINER_NAME=ipdata-10
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IPDATA_API_KEY=${IPDATA_API_KEY}
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - ELASTICSEARCH_CA_CERTS_PATH=/app/ca.crt
+      - ELASTICSEARCH_INDEX_BASE=${ELASTICSEARCH_INDEX_BASE:-ipdata}
+      - REQUEST_LIMIT=${REQUEST_LIMIT:-100000}
+      - REDIS_CACHE_EXPIRY_SECONDS=${REDIS_CACHE_EXPIRY_SECONDS:-86400}
+    volumes:
+      - ./ca.crt:/app/ca.crt:ro
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+  # Stats reset service (runs daily at midnight)
+  stats-reset:
+    build:
+      context: .
+      dockerfile: Dockerfile.reset
+    container_name: ipdata-stats-reset
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - ipdata-network
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
+    driver: local

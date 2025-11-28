@@ -1,0 +1,14 @@
+POST _reindex
+{
+  "source": {
+    "index": "ip_data-*"
+  },
+  "dest": {
+    "index": "ipdata-2024-03-26",
+    "op_type": "create"
+  },
+  "script": {
+    "source": "ctx._id = ctx._source.ip",
+    "lang": "painless"
+  }
+}

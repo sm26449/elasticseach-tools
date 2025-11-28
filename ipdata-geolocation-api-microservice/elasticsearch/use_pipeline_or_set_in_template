@@ -1,0 +1,5 @@
+POST ipdata/_doc?pipeline=set_timestamp_if_missing
+{
+  "field1": "value1",
+  "field2": "value2"
+}

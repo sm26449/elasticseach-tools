@@ -1,0 +1,36 @@
+filebeat.inputs:
+
+
+- type: filestream
+  id: pmta-sender-log
+  enabled: true
+  paths:
+    - /var/log/pmta/sender2elastic_log-*.csv
+  tags: ["sender"]
+  encoding: utf-8
+
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+  # Period on which files under path should be checked for changes
+  #reload.period: 10s
+
+
+  #index.codec: best_compression
+  #_source.enabled: false
+
+
+output.logstash.hosts: ["LOGSTASH_HOST:5044"]
+output.logstash.ssl.certificate_authorities: ["/etc/filebeat/ca.crt"]
+output.logstash.ssl.certificate: "/etc/filebeat/filebeat.crt"
+output.logstash.ssl.key: "/etc/filebeat/filebeat.key"
+
+
+
+
+logging.level: debug
